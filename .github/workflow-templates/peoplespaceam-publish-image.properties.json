@@ -1,0 +1,6 @@
+{
+  "name": "PeopleSpaceAM Publish Image",
+  "description": "Build and publish a Docker image to GitHub Container Registry using the shared PeopleSpaceAM workflow.",
+  "iconName": "octicon container",
+  "categories": ["Docker"]
+}

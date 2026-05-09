@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ "${SKIP_GITHOOKS:-}" = "1" ]; then
+  exit 0
+fi
+
+msg_file="$1"
+subject="$(sed -n '1p' "$msg_file")"
+
+case "$subject" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *)
+    exit 0
+    ;;
+esac
+
+if ! grep -Eq '(#|refs |Refs |closes |Closes |fixes |Fixes )[0-9]+' "$msg_file"; then
+  echo "commit-msg: include an issue reference, for example 'Refs #123' or 'Closes #123'." >&2
+  exit 1
+fi
+
+exit 0

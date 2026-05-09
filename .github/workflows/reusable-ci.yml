@@ -1,0 +1,108 @@
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      run-go:
+        type: boolean
+        default: true
+      run-node:
+        type: boolean
+        default: true
+      run-python:
+        type: boolean
+        default: true
+      run-docker-build:
+        type: boolean
+        default: false
+      node-version:
+        type: string
+        default: "22"
+      go-version:
+        type: string
+        default: "1.24.x"
+      python-version:
+        type: string
+        default: "3.12"
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.detect.outputs.go }}
+      node: ${{ steps.detect.outputs.node }}
+      python: ${{ steps.detect.outputs.python }}
+      docker: ${{ steps.detect.outputs.docker }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        shell: bash
+        run: |
+          test -f go.mod && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"
+          test -f package.json && echo "node=true" >> "$GITHUB_OUTPUT" || echo "node=false" >> "$GITHUB_OUTPUT"
+          { test -f pyproject.toml || test -f requirements.txt; } && echo "python=true" >> "$GITHUB_OUTPUT" || echo "python=false" >> "$GITHUB_OUTPUT"
+          test -f Dockerfile && echo "docker=true" >> "$GITHUB_OUTPUT" || echo "docker=false" >> "$GITHUB_OUTPUT"
+
+  go:
+    needs: detect
+    if: ${{ inputs.run-go && needs.detect.outputs.go == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ inputs.go-version }}
+          cache: true
+      - run: go test ./...
+
+  node:
+    needs: detect
+    if: ${{ inputs.run-node && needs.detect.outputs.node == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+      - run: npm run lint --if-present
+      - run: npm test --if-present
+      - run: npm run build --if-present
+
+  python:
+    needs: detect
+    if: ${{ inputs.run-python && needs.detect.outputs.python == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+      - run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install -e ".[test]" || pip install -e .; fi
+      - run: |
+          if command -v pytest >/dev/null 2>&1; then pytest; else python -m compileall .; fi
+
+  docker-build:
+    needs: detect
+    if: ${{ inputs.run-docker-build && needs.detect.outputs.docker == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: local/${{ github.event.repository.name }}:${{ github.sha }}
