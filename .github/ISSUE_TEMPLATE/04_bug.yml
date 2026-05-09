@@ -1,7 +1,7 @@
 name: Bug
 description: Incorrect or broken behavior.
 title: "[Bug] "
-labels: ["kind: bug"]
+labels: ["level: story", "kind: bug"]
 body:
   - type: textarea
     id: observed
@@ -42,6 +42,61 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Use severity for impact; use Priority for scheduling.
+      options:
+        - S0 Critical
+        - S1 High
+        - S2 Medium
+        - S3 Low
+    validations:
+      required: true
+  - type: dropdown
+    id: bug_type
+    attributes:
+      label: Bug Type
+      options:
+        - Regression
+        - Production
+        - API
+        - UI
+        - Integration
+        - CI
+        - Security
+        - Data
+        - Flaky Test
+        - Unknown
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Local
+        - Dev
+        - Staging
+        - Production
+        - CI
+        - Telegram
+        - Unknown
+    validations:
+      required: true
+  - type: dropdown
+    id: reproducibility
+    attributes:
+      label: Reproducibility
+      options:
+        - Always
+        - Intermittent
+        - Once
+        - Cannot Reproduce
+        - Unknown
+    validations:
+      required: true
+  - type: dropdown
     id: priority
     attributes:
       label: Priority
@@ -50,6 +105,30 @@ body:
         - P1
         - P2
         - P3
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact / Blast Radius
+      placeholder: |
+        Users affected:
+        Data/security risk:
+        Rollback or mitigation:
+    validations:
+      required: true
+  - type: textarea
+    id: triage
+    attributes:
+      label: Triage Checklist
+      value: |
+        - [ ] Observed behavior is described.
+        - [ ] Expected behavior is described.
+        - [ ] Reproduction steps or evidence exist.
+        - [ ] Affected repo/component is known.
+        - [ ] Severity and priority are set.
+        - [ ] Regression/security/data risk is noted where relevant.
+        - [ ] Workaround or mitigation is documented if needed.
     validations:
       required: true
   - type: textarea
