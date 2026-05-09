@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: PeopleSpaceAM Next Workstream
+    url: https://github.com/orgs/peoplespaceam/projects/3
+    about: Use this project as the execution source of truth for Telegram/Mini App work.
+  - name: Platform Architecture Refactor
+    url: https://github.com/orgs/peoplespaceam/projects/2
+    about: Use this project for existing architecture refactor context and historical work items.

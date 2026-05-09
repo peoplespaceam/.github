@@ -1,0 +1,103 @@
+name: Story
+description: Repo-owned deliverable under an Epic.
+title: "[Story] "
+labels: ["level: story"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Stories are repo-owned deliverables under an Epic. Single-repo Stories require repo-level tests/evidence.
+        Cross-repo Stories require BDD scenarios.
+  - type: input
+    id: parent_epic
+    attributes:
+      label: Parent Epic
+      description: Link the parent Epic issue.
+      placeholder: "https://github.com/peoplespaceam/docs/issues/..."
+    validations:
+      required: true
+  - type: input
+    id: goal
+    attributes:
+      label: Goal
+      placeholder: "Implement..."
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Feature
+        - Task
+        - Refactor
+        - Docs
+        - Chore
+    validations:
+      required: true
+  - type: dropdown
+    id: target_repo
+    attributes:
+      label: Target Repo
+      options:
+        - docs
+        - platform-api
+        - tg-miniapp
+        - tg-bot
+        - contracts
+        - platform-ops
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      placeholder: |
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      placeholder: |
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: pre_impl
+    attributes:
+      label: Pre-Implementation Checklist
+      value: |
+        - [ ] Target repo confirmed.
+        - [ ] Branch name defined.
+        - [ ] API/contract spec exists or is explicitly not required.
+        - [ ] Environment setup is documented.
+        - [ ] Required config/secrets are identified or mocked.
+        - [ ] CI/test commands are known.
+        - [ ] Dependencies are linked.
+        - [ ] Rollback/compatibility notes are captured where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: test_plan
+    attributes:
+      label: Test / Evidence Plan
+      description: Use repo-level evidence for single-repo Stories; BDD only for cross-repo Stories.
+      placeholder: |
+        - Unit:
+        - API:
+        - Integration:
+        - UI/Screenshot:
+        - CI:
+    validations:
+      required: true
+  - type: textarea
+    id: bdd
+    attributes:
+      label: BDD Scenarios
+      description: Required only when this Story crosses repos or owns a user journey.
+      placeholder: |
+        Not required.
+    validations:
+      required: false

@@ -1,0 +1,73 @@
+name: API / Contract Spec
+description: Pre-implementation API, GraphQL, gRPC, HTTP, or routing contract.
+title: "[Spec] "
+labels: ["kind: docs", "area: contracts"]
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: Parent Issue
+      placeholder: "Epic/Story link"
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - HTTP
+        - gRPC
+        - GraphQL
+        - Bot command/callback
+        - Mini App launch/deeplink
+        - Routing/Ops
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract
+      placeholder: |
+        Route/method, proto RPC, GraphQL operation, command/callback, or route ownership.
+    validations:
+      required: true
+  - type: textarea
+    id: auth
+    attributes:
+      label: Auth / Session / Identity Requirements
+      placeholder: |
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: request_response
+    attributes:
+      label: Request / Response / Errors
+      placeholder: |
+        Request:
+
+        Response:
+
+        Errors:
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility / Rollout
+      placeholder: |
+        - Backward compatibility:
+        - Consumers:
+        - Migration:
+        - Rollback:
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Test Cases Derived From Spec
+      placeholder: |
+        - [ ] ...
+    validations:
+      required: true

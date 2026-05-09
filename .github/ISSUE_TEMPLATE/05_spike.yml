@@ -1,0 +1,39 @@
+name: Spike
+description: Time-boxed investigation or design validation.
+title: "[Spike] "
+labels: ["kind: spike"]
+body:
+  - type: input
+    id: question
+    attributes:
+      label: Question To Answer
+      placeholder: "Should we..."
+    validations:
+      required: true
+  - type: input
+    id: timebox
+    attributes:
+      label: Timebox
+      placeholder: "1 day / 2 days / 1 week"
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      placeholder: |
+        - Investigate...
+        - Compare...
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected Output
+      value: |
+        - [ ] Findings documented.
+        - [ ] Recommendation stated.
+        - [ ] Risks/tradeoffs captured.
+        - [ ] Follow-up Stories/Sub-tasks created if needed.
+    validations:
+      required: true

@@ -1,0 +1,120 @@
+name: Epic
+description: Cross-repo capability or workstream container.
+title: "[Epic] "
+labels: ["level: epic", "kind: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Epics are GitHub issues, usually in `peoplespaceam/docs`.
+        They track outcomes and coordination. They do not get implementation branches by default.
+  - type: input
+    id: goal
+    attributes:
+      label: Goal
+      description: State the capability outcome in one or two sentences.
+      placeholder: "Allow linked Telegram users to..."
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is included?
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+      description: What is explicitly out of scope?
+      placeholder: |
+        - ...
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+  - type: dropdown
+    id: workstream
+    attributes:
+      label: Workstream
+      options:
+        - Platform API
+        - Mini App
+        - Telegram Bot
+        - Contracts
+        - AccessGate
+        - Architecture
+        - Security/Auth
+        - Ops
+        - Docs
+    validations:
+      required: true
+  - type: textarea
+    id: repositories
+    attributes:
+      label: Repositories
+      placeholder: |
+        - docs
+        - platform-api
+        - tg-miniapp
+        - tg-bot
+    validations:
+      required: true
+  - type: textarea
+    id: bdd
+    attributes:
+      label: BDD Scenarios
+      description: Required for Epics. Keep these cross-repo/user-journey oriented.
+      placeholder: |
+        ### Scenario: Linked user completes the capability
+        Given ...
+        When ...
+        Then ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: Definition of Ready
+      options:
+        - label: Goal and user/business outcome are clear.
+        - label: In-scope repos are listed.
+        - label: Non-goals are explicit.
+        - label: Major dependencies and blockers are known.
+        - label: Architecture/UX decisions are captured or marked open.
+        - label: Child Stories are identified enough to begin planning.
+        - label: Acceptance criteria are measurable at capability level.
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Required child Stories are Done or explicitly deferred.
+        - label: Deferred scope has follow-up issues.
+        - label: Architecture/UX docs are updated.
+        - label: Cross-repo behavior is verified end-to-end.
+        - label: No open P0/P1 blockers remain.
+        - label: Final summary and evidence links are attached.
+  - type: checkboxes
+    id: delivery
+    attributes:
+      label: Definition of Delivery
+      options:
+        - label: Capability is usable by target users.
+        - label: Required repos are deployed or ready for deployment.
+        - label: Operational/config changes are applied or ready.
+        - label: Product owner accepts the outcome.
+        - label: Known limitations are documented.

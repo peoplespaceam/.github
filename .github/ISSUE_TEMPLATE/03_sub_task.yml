@@ -1,0 +1,86 @@
+name: Sub-task
+description: Concrete implementation slice under a Story.
+title: "[Sub-task] "
+labels: ["level: sub-task", "kind: task"]
+body:
+  - type: input
+    id: parent_story
+    attributes:
+      label: Parent Story
+      placeholder: "https://github.com/peoplespaceam/<repo>/issues/..."
+    validations:
+      required: true
+  - type: dropdown
+    id: target_repo
+    attributes:
+      label: Target Repo
+      options:
+        - docs
+        - platform-api
+        - tg-miniapp
+        - tg-bot
+        - contracts
+        - platform-ops
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Proposed Branch Name
+      placeholder: "feature/123-short-slug"
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      placeholder: "Implement..."
+    validations:
+      required: true
+  - type: textarea
+    id: implementation_area
+    attributes:
+      label: Implementation Area
+      placeholder: |
+        Files/packages/modules likely involved:
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: pre_impl
+    attributes:
+      label: Pre-Implementation Checklist
+      value: |
+        - [ ] Parent Story is known.
+        - [ ] Target repo and files/area are known.
+        - [ ] Task is small enough for one branch/PR.
+        - [ ] API/contract spec exists or is explicitly not required.
+        - [ ] Env setup and CI/test commands are known.
+        - [ ] No unresolved product/architecture decision blocks implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      placeholder: |
+        - Unit:
+        - API:
+        - Integration:
+        - UI/Screenshot:
+        - CI:
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of Done
+      value: |
+        - [ ] Code/config/docs change is complete.
+        - [ ] Local verification ran.
+        - [ ] Changed files are scoped to the task.
+        - [ ] PR references the issue.
+        - [ ] Review feedback is addressed or explicitly deferred.
+        - [ ] Evidence is attached.
+    validations:
+      required: true

@@ -1,0 +1,62 @@
+name: Infra / Env / CI Readiness
+description: Pre-implementation setup for environment, CI, routing, or deployment prerequisites.
+title: "[Readiness] "
+labels: ["kind: chore", "area: ops"]
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: Parent Issue
+      placeholder: "Epic/Story link"
+    validations:
+      required: true
+  - type: dropdown
+    id: target_repo
+    attributes:
+      label: Target Repo
+      options:
+        - docs
+        - platform-api
+        - tg-miniapp
+        - tg-bot
+        - contracts
+        - platform-ops
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment Setup
+      value: |
+        - [ ] Dependencies can be installed.
+        - [ ] App/service can run locally or blocked reason is documented.
+        - [ ] Required env vars are listed.
+        - [ ] Local dev values/mocks are available.
+        - [ ] No production secrets are required.
+    validations:
+      required: true
+  - type: textarea
+    id: ci
+    attributes:
+      label: CI / Test Setup
+      value: |
+        - [ ] Expected CI checks are known.
+        - [ ] Local equivalent commands are documented.
+        - [ ] Codegen/build steps are known.
+        - [ ] Existing failing/flaky checks are identified.
+    validations:
+      required: true
+  - type: textarea
+    id: infra
+    attributes:
+      label: Infra / Routing Setup
+      value: |
+        - [ ] Route ownership is defined.
+        - [ ] Public/internal exposure is defined.
+        - [ ] CORS/webview requirements are known.
+        - [ ] Redirect URLs are defined where needed.
+        - [ ] TLS/domain assumptions are known.
+        - [ ] Deployment target is known.
+        - [ ] Healthcheck/validation approach is defined.
+    validations:
+      required: true
