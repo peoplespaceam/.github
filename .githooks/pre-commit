@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ "${SKIP_GITHOOKS:-}" = "1" ]; then
+  exit 0
+fi
+
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+case "$branch" in
+  main|master|production|prod)
+    echo "pre-commit: refusing commit on protected branch '$branch'. Create an issue branch first." >&2
+    exit 1
+    ;;
+esac
+
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+[ -n "$staged_files" ] || exit 0
+
+conflicts="$(git diff --cached --check 2>&1 || true)"
+if [ -n "$conflicts" ]; then
+  echo "$conflicts" >&2
+  exit 1
+fi
+
+echo "$staged_files" | while IFS= read -r file; do
+  [ -f "$file" ] || continue
+
+  size="$(wc -c <"$file" | tr -d ' ')"
+  if [ "$size" -gt 10485760 ]; then
+    echo "pre-commit: staged file is larger than 10 MiB: $file" >&2
+    exit 1
+  fi
+
+  case "$file" in
+    *.png|*.jpg|*.jpeg|*.gif|*.webp|*.ico|*.pdf|*.zip|*.gz|*.tgz|*.jar|*.bin)
+      continue
+      ;;
+  esac
+
+  if grep -nE '(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]{30,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----)' "$file" >/tmp/peoplespaceam-precommit-secrets.$$ 2>/dev/null; then
+    echo "pre-commit: possible secret detected in $file" >&2
+    cat /tmp/peoplespaceam-precommit-secrets.$$ >&2
+    rm -f /tmp/peoplespaceam-precommit-secrets.$$
+    exit 1
+  fi
+  rm -f /tmp/peoplespaceam-precommit-secrets.$$
+done
+
+exit 0

@@ -1,0 +1,24 @@
+name: Publish Image
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      push:
+        description: Push image to GHCR
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    uses: peoplespaceam/.github/.github/workflows/reusable-publish-image.yml@main
+    with:
+      image-name: ${{ github.event.repository.name }}
+      push: ${{ github.event_name != 'workflow_dispatch' || inputs.push }}
+    permissions:
+      contents: read
+      packages: write

@@ -1,0 +1,6 @@
+{
+  "name": "PeopleSpaceAM CI",
+  "description": "Base CI for PeopleSpaceAM repos. Detects Go, Node, Python, and optional Docker builds.",
+  "iconName": "octicon check-circle",
+  "categories": ["Go", "JavaScript", "TypeScript", "Python", "Docker"]
+}

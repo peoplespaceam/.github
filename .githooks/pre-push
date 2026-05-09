@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+set -eu
+
+if [ "${SKIP_GITHOOKS:-}" = "1" ]; then
+  exit 0
+fi
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master|refs/heads/production|refs/heads/prod)
+      echo "pre-push: refusing direct push to protected branch '$remote_ref'." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ "${RUN_LOCAL_CHECKS:-}" != "1" ]; then
+  exit 0
+fi
+
+if [ -f go.mod ]; then
+  go test ./...
+fi
+
+if [ -f package.json ]; then
+  if command -v npm >/dev/null 2>&1; then
+    npm test -- --runInBand 2>/dev/null || npm test
+  fi
+fi
+
+if [ -f pyproject.toml ] || [ -f requirements.txt ]; then
+  if command -v pytest >/dev/null 2>&1; then
+    pytest
+  fi
+fi
+
+exit 0
